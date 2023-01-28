@@ -25,6 +25,16 @@ app.use("/", router);
 // app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Listening: http://localhost:${PORT}`);
+});
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: `http://127.0.0.1:5173`,
+  },
+});
+
+io.on("connection", (socket: any) => {
+  console.log("connected to socket------>>>>>>");
 });

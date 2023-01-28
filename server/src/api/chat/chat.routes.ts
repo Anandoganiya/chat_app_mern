@@ -29,3 +29,30 @@ router.post(
     res.json(result);
   }
 );
+
+router.put(
+  "/rename-group",
+  authUser.authenticateUser,
+  async (req: Request, res: Response) => {
+    const result = await chatController.renameGroup(req);
+    res.json(result);
+  }
+);
+
+router.put(
+  "/add-group",
+  authUser.authenticateUser,
+  async (req: Request, res: Response) => {
+    const result = await chatController.addToGroup(req);
+    res.json(result);
+  }
+);
+
+router.put(
+  "/remove-group",
+  authUser.authenticateUser,
+  async (req: Request, res: Response) => {
+    const result = await chatController.removeFromGroup(req);
+    res.json(result);
+  }
+);

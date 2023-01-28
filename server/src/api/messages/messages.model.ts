@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { JwtPayload } from "jsonwebtoken";
 
 const messagesModel = new mongoose.Schema(
   {
@@ -18,7 +19,7 @@ const messagesModel = new mongoose.Schema(
 );
 
 export interface IMessage {
-  sender?: string;
+  sender?: string | JwtPayload | undefined;
   content?: string;
   chat?: string;
 }
