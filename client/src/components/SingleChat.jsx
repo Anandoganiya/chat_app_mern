@@ -59,7 +59,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setMessages(data);
       setLoading(false);
 
-      // socket.emit("join chat", selectedChat._id);
+      socket.emit("join room", selectedChat._id);
     } catch (error) {
       console.log(error);
       toast({
@@ -121,7 +121,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
 
-    // selectedChatCompare = selectedChat;
+    selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
 
@@ -140,6 +140,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   //     }
   //   });
   // });
+
+  // useEffect(()=>{
+  //   socket.on('message recieved',(newMessageRecieved)=>{
+
+  //   })
+  // },[])
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -164,6 +170,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => {
+      setSocketConnected(true);
+    });
   }, []);
 
   return (
