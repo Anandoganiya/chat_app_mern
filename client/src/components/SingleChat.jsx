@@ -38,6 +38,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
 
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => {
+      setSocketConnected(true);
+    });
+  }, []);
+
   const fetchMessages = async () => {
     if (!selectedChat) return;
     // console.log("selectedChat", selectedChat);
@@ -92,7 +100,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
-        // socket.emit("new message", data);
+        socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
         console.log(error);
@@ -141,11 +149,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   //   });
   // });
 
-  // useEffect(()=>{
-  //   socket.on('message recieved',(newMessageRecieved)=>{
-
-  //   })
-  // },[])
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        // give notification
+        console.log("give notification");
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  }, []);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -167,14 +183,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }, timerLength);
   };
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connection", () => {
-      setSocketConnected(true);
-    });
-  }, []);
 
   return (
     <>
