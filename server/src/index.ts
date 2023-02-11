@@ -1,5 +1,6 @@
-require("express-async-errors");
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
+import "express-async-errors";
 import express, { Application } from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -8,8 +9,6 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db";
 import { router } from "./api";
 import { errorHandler } from "./middleware";
-import User from "./api/user/user.model";
-import { log } from "console";
 
 const app: Application = express();
 const PORT = Number(process.env.PORT) | 6000;
@@ -53,12 +52,12 @@ io.on("connection", (socket: any) => {
   });
 
   socket.on("new message", (newMessageReceived: any) => {
-    log(newMessageReceived);
+    console.log(newMessageReceived);
     let chat = newMessageReceived.chat;
     if (!chat.users) return console.log("chat.user not defined");
 
     chat.users.forEach((user: any) => {
-      log("user", user);
+      console.log("user", user);
       if (user._id === newMessageReceived.chat._id) return;
       socket.in(user._id).emit("message recieved", newMessageReceived);
     });

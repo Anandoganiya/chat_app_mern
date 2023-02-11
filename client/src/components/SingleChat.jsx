@@ -26,7 +26,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
-
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -48,6 +47,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
+    // console.log("selected --->>>", selectedChat);
     // console.log("selectedChat", selectedChat);
 
     try {
@@ -63,7 +63,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         `http://localhost:6136/message/${selectedChat._id} `,
         config
       );
-      // console.log("chatMessges", data);
+      console.log("chatMessges", data);
       setMessages(data);
       setLoading(false);
 
@@ -101,6 +101,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           config
         );
         socket.emit("new message", data);
+        // console.log("data---->", [...messages, data]);
         setMessages([...messages, data]);
       } catch (error) {
         console.log(error);
@@ -151,6 +152,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
+      // console.log("selectedChatCompare", selectedChatCompare);
+      // console.log("newMessageRecieved", newMessageRecieved);
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageRecieved.chat._id
@@ -158,6 +161,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         // give notification
         console.log("give notification");
       } else {
+        console.log(messages);
+        // console.log("messages single chat", messages, newMessageRecieved);
         setMessages([...messages, newMessageRecieved]);
       }
     });
@@ -166,22 +171,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
-    if (!socketConnected) return;
+    // if (!socketConnected) return;
 
-    if (!typing) {
-      setTyping(true);
-      socket.emit("typing", selectedChat._id);
-    }
-    let lastTypingTime = new Date().getTime();
-    var timerLength = 3000;
-    setTimeout(() => {
-      var timeNow = new Date().getTime();
-      var timeDiff = timeNow - lastTypingTime;
-      if (timeDiff >= timerLength && typing) {
-        socket.emit("stop typing", selectedChat._id);
-        setTyping(false);
-      }
-    }, timerLength);
+    // if (!typing) {
+    //   setTyping(true);
+    //   socket.emit("typing", selectedChat._id);
+    // }
+    // let lastTypingTime = new Date().getTime();
+    // var timerLength = 3000;
+    // setTimeout(() => {
+    //   var timeNow = new Date().getTime();
+    //   var timeDiff = timeNow - lastTypingTime;
+    //   if (timeDiff >= timerLength && typing) {
+    //     socket.emit("stop typing", selectedChat._id);
+    //     setTyping(false);
+    //   }
+    // }, timerLength);
   };
 
   return (
@@ -206,7 +211,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {messages &&
               (!selectedChat.isGroupChat ? (
                 <>
-                  {getSender(user, selectedChat.users)}
+                  {getSender(user.data.data, selectedChat.users)}
                   <ProfileModal
                     user={getSenderFull(user.data.data, selectedChat.users)}
                   />
@@ -231,7 +236,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             w="100%"
             h="100%"
             borderRadius="lg"
-            overflowY="hidden"
+            overflowY="scroll"
           >
             {loading ? (
               <Spinner
