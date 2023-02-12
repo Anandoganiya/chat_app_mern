@@ -46,18 +46,18 @@ io.on("connection", (socket: any) => {
     socket.emit("connected");
   });
 
-  socket.on("join room", (room: any) => {
+  socket.on("join chat", (room: any) => {
     socket.join(room);
-    console.log("user has join the room", room);
+    console.log("user has join the chat", room);
   });
 
   socket.on("new message", (newMessageReceived: any) => {
-    console.log(newMessageReceived);
+    // console.log(newMessageReceived);
     let chat = newMessageReceived.chat;
     if (!chat.users) return console.log("chat.user not defined");
 
     chat.users.forEach((user: any) => {
-      console.log("user", user);
+      // console.log("user", user);
       if (user._id === newMessageReceived.chat._id) return;
       socket.in(user._id).emit("message recieved", newMessageReceived);
     });
