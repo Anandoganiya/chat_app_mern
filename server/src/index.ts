@@ -14,7 +14,12 @@ const app: Application = express();
 const PORT = Number(process.env.PORT) | 6000;
 
 app.use(morgan("dev"));
-app.use(cors());
+app.use(
+  cors({
+    // origin: "http://127.0.0.1:5173",
+    origin: "*",
+  })
+);
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
@@ -32,7 +37,8 @@ const server = app.listen(PORT, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: `http://127.0.0.1:5173`,
+    origin: `*`,
+    // origin: `http://127.0.0.1:5173`,
   },
 });
 
@@ -42,7 +48,6 @@ io.on("connection", (socket: any) => {
   socket.on("setup", (userData: any) => {
     socket.join(userData?.data?.data?._id);
 
-    console.log("userData", userData?.data?.data?._id);
     socket.emit("connected");
   });
 
@@ -52,12 +57,10 @@ io.on("connection", (socket: any) => {
   });
 
   socket.on("new message", (newMessageReceived: any) => {
-    // console.log(newMessageReceived);
     let chat = newMessageReceived.chat;
     if (!chat.users) return console.log("chat.user not defined");
 
     chat.users.forEach((user: any) => {
-      // console.log("user", user);
       if (user._id === newMessageReceived.chat._id) return;
       socket.in(user._id).emit("message recieved", newMessageReceived);
     });

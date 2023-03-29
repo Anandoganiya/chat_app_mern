@@ -116,26 +116,27 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     fetchMessages();
-
     selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
 
   useEffect(() => {
-    socket.on("message recieved", (newMessageRecieved) => {
+    const handleMessageReceived = (newMessageReceived) => {
       if (
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
-        selectedChatCompare._id !== newMessageRecieved.chat._id
+        selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        // if (!notification.includes(newMessageRecieved)) {
-        //   setNotification([newMessageRecieved, ...notification]);
-        //   setFetchAgain(!fetchAgain);
-        // }
       } else {
-        setMessages([...messages, newMessageRecieved]);
+        setMessages((oldMessages) => [...oldMessages, newMessageReceived]);
       }
-    });
-  });
+    };
+    socket.on("message recieved", handleMessageReceived);
+
+    return () => {
+      socket.off("message recieved", handleMessageReceived);
+      socket.disconnect();
+    };
+  }, []);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -216,7 +217,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 margin="auto"
               />
             ) : (
-              <div className="messages">
+              <div className="messages" style={{ height: "100%" }}>
                 <ScrollableChat messages={messages} />
               </div>
             )}
