@@ -43,7 +43,6 @@ const Signup = () => {
       });
       return;
     }
-    console.log(name, email, password, pic);
     try {
       const config = {
         headers: {
@@ -60,7 +59,6 @@ const Signup = () => {
         },
         config
       );
-      console.log(data);
       toast({
         title: "Registration Successful",
         status: "success",
@@ -96,7 +94,6 @@ const Signup = () => {
       });
       return;
     }
-    console.log(pics);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
@@ -131,14 +128,14 @@ const Signup = () => {
 
   return (
     <VStack spacing="5px">
-      <FormControl id="first-name" isRequired>
+      <FormControl isRequired>
         <FormLabel>Name</FormLabel>
         <Input
           placeholder="Enter Your Name"
           onChange={(e) => setName(e.target.value)}
         />
       </FormControl>
-      <FormControl id="email" isRequired>
+      <FormControl isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
           type="email"
@@ -146,7 +143,7 @@ const Signup = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl id="password" isRequired>
+      <FormControl isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size="md">
           <Input
@@ -161,7 +158,7 @@ const Signup = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-      <FormControl id="password" isRequired>
+      <FormControl isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size="md">
           <Input

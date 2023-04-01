@@ -56,6 +56,9 @@ io.on("connection", (socket: any) => {
     console.log("user has join the chat", room);
   });
 
+  socket.on("typing", (room: any) => socket.in(room).emit("typing"));
+  socket.on("stop typing", (room: any) => socket.in(room).emit("stop typing"));
+
   socket.on("new message", (newMessageReceived: any) => {
     let chat = newMessageReceived.chat;
     if (!chat.users) return console.log("chat.user not defined");
@@ -64,5 +67,11 @@ io.on("connection", (socket: any) => {
       if (user._id === newMessageReceived.chat._id) return;
       socket.in(user._id).emit("message recieved", newMessageReceived);
     });
+  });
+
+  socket.off("setup", (userData: any) => {
+    socket.join(userData?.data?.data?._id);
+    console.log("USER DISCONNECTED");
+    socket.leave(userData._id);
   });
 });

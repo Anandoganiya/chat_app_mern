@@ -10,7 +10,9 @@ import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
 
 const MyChats = ({ fetchAgain }) => {
-  const [loggedUser, setLoggedUser] = useState();
+  const [loggedUser, setLoggedUser] = useState(
+    JSON.parse(localStorage.getItem("userInfo"))
+  );
 
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -47,7 +49,7 @@ const MyChats = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    // setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
   }, [fetchAgain]);
 
@@ -72,14 +74,14 @@ const MyChats = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        My Chats
+        Chats
         <GroupChatModal>
           <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
           >
-            New Group Chat
+            Create Group Chat
           </Button>
         </GroupChatModal>
       </Box>
@@ -108,7 +110,7 @@ const MyChats = ({ fetchAgain }) => {
               >
                 <Text>
                   {!chat.isGroupChat
-                    ? getSender(loggedUser.data.data, chat.users)
+                    ? getSender(loggedUser?.data?.data, chat?.users)
                     : chat.chatName}
                 </Text>
                 {chat.latestMessage && (

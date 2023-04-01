@@ -11,8 +11,8 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -44,8 +44,6 @@ const Login = () => {
         { email, password },
         config
       );
-
-      console.log(JSON.stringify(data));
       toast({
         title: "Login Successful",
         status: "success",
@@ -71,7 +69,7 @@ const Login = () => {
 
   return (
     <VStack spacing="10px">
-      <FormControl id="email" isRequired>
+      <FormControl isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
           value={email}
@@ -80,7 +78,7 @@ const Login = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-      <FormControl id="password" isRequired>
+      <FormControl isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size="md">
           <Input

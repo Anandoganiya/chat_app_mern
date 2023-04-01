@@ -146,13 +146,13 @@ function SideDrawer() {
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen}>
             <i className="fas fa-search"></i>
-            <Text d={{ base: "none", md: "flex" }} px={4}>
+            <Text display={{ base: "none", md: "flex" }} px={4}>
               Search User
             </Text>
           </Button>
         </Tooltip>
         <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
+          ChatWe
         </Text>
         <div>
           <Menu>
@@ -211,8 +211,13 @@ function SideDrawer() {
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                  }
+                  console.log(e.key);
+                }}
               />
-              <Button onClick={handleSearch}>Go</Button>
+              <Button onClick={handleSearch}>Find</Button>
             </Box>
             {loading ? (
               <ChatLoading />
@@ -225,7 +230,11 @@ function SideDrawer() {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" display="flex" />}
+            {loadingChat && (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Spinner display="flex" />
+              </div>
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
