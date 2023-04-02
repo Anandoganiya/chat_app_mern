@@ -1,5 +1,6 @@
 import { compare, hash } from "bcrypt";
 import { Request } from "express";
+import { Storage } from "@google-cloud/storage";
 import { userDal } from "./user.dal";
 import { ErrorGenerator, jwtGenerator, ResultGenerator } from "../../utils";
 import { IUser } from "./user.model";
@@ -13,6 +14,7 @@ class UserController {
       profileImage,
     }: { name: string; email: string; password: string; profileImage: string } =
       req.body;
+    console.log(req.body);
     if (!name || !password || !email) {
       throw new ErrorGenerator(401, "Fields are required!");
     }
@@ -40,6 +42,11 @@ class UserController {
       data: registerUser,
     });
     return result;
+  }
+
+  async setProfileImage(req: Request) {
+    console.log(req.body);
+    return "image url";
   }
 
   async userLogin(req: Request) {

@@ -7,6 +7,11 @@ router.post("/user-register", async (req: Request, res: Response) => {
   const result = await userController.userRegister(req);
   res.json(result);
 });
+
+router.post("/upload/profile-image", async (req: Request, res: Response) => {
+  const result = await userController.setProfileImage(req);
+  res.json(result);
+});
 router.post("/user-login", async (req: Request, res: Response) => {
   const result = await userController.userLogin(req);
   res.json(result);

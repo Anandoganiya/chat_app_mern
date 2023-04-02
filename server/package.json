@@ -12,6 +12,7 @@
   "author": "Anand Gujarathi",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^6.9.5",
     "@types/helmet": "^4.0.0",
     "@types/mongoose": "^5.11.97",
     "bcrypt": "^5.1.0",
