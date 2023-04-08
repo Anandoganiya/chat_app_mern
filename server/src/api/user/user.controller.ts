@@ -5,6 +5,14 @@ import { userDal } from "./user.dal";
 import { ErrorGenerator, jwtGenerator, ResultGenerator } from "../../utils";
 import { IUser } from "./user.model";
 
+let projectId = "firm-tracer-382507";
+let keyFilename = "fileKey.json";
+const storage = new Storage({
+  projectId,
+  keyFilename,
+});
+const bucket = storage.bucket("chatimage_bucket");
+
 class UserController {
   async userRegister(req: Request) {
     let {
@@ -45,8 +53,24 @@ class UserController {
   }
 
   async setProfileImage(req: Request) {
-    console.log(req.body);
-    return "image url";
+    try {
+      if (req.file) {
+        const imageUpload = bucket.file(req.file.originalname);
+        await imageUpload.save(req.file.buffer);
+        // const blobStream = blob.createWriteStream();
+        // blobStream.end(req.file.buffer);
+        // blobStream.on("finish", () => {
+        //   console.log(publicUrl);
+        //   return publicUrl;
+        // });
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.metadata.name}`;
+        return publicUrl;
+      }
+    } catch (error) {
+      console.log(error);
+      return new ErrorGenerator(500, "something went wrong");
+    }
+    // return "image url";
   }
 
   async userLogin(req: Request) {

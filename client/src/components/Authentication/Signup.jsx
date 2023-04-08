@@ -96,17 +96,17 @@ const Signup = () => {
     }
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
-      data.append("file", pics);
-      data.append("upload_preset", "chat-app");
-      data.append("cloud_name", "piyushproj");
-      fetch("https://api.cloudinary.com/v1_1/piyushproj/image/upload", {
+      data.append("imgFile", pics);
+      // data.append("upload_preset", "chat-app");
+      // data.append("cloud_name", "piyushproj");
+      fetch(" http://localhost:6136/user/upload/profile-image", {
         method: "post",
         body: data,
       })
         .then((res) => res.json())
         .then((data) => {
-          setPic(data.url.toString());
-          console.log(data.url.toString());
+          // setPic(data.url.toString());
+          console.log(data);
           setPicLoading(false);
         })
         .catch((err) => {
