@@ -3,7 +3,7 @@ import { Request } from "express";
 import { Storage } from "@google-cloud/storage";
 import { userDal } from "./user.dal";
 import { ErrorGenerator, jwtGenerator, ResultGenerator } from "../../utils";
-import { IUser } from "./user.model";
+import User, { IUser } from "./user.model";
 
 let projectId = "firm-tracer-382507";
 let keyFilename = "fileKey.json";
@@ -22,7 +22,6 @@ class UserController {
       profileImage,
     }: { name: string; email: string; password: string; profileImage: string } =
       req.body;
-    console.log(req.body);
     if (!name || !password || !email) {
       throw new ErrorGenerator(401, "Fields are required!");
     }
@@ -57,20 +56,18 @@ class UserController {
       if (req.file) {
         const imageUpload = bucket.file(req.file.originalname);
         await imageUpload.save(req.file.buffer);
-        // const blobStream = blob.createWriteStream();
-        // blobStream.end(req.file.buffer);
-        // blobStream.on("finish", () => {
-        //   console.log(publicUrl);
-        //   return publicUrl;
-        // });
-        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.metadata.name}`;
-        return publicUrl;
+        const blobStream = imageUpload.createWriteStream();
+        blobStream.end(req.file.buffer);
+        blobStream.on("finish", (e: any) => {
+        });
+        const imageUrl = `https://storage.googleapis.com/${bucket.name}/${imageUpload.name}`;
+        return { imageUrl: `https://storage.googleapis.com/${bucket.name}/${imageUpload.name}` };
+
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log('error', error);
       return new ErrorGenerator(500, "something went wrong");
     }
-    // return "image url";
   }
 
   async userLogin(req: Request) {
@@ -82,7 +79,7 @@ class UserController {
 
     const user = await userDal.findUserByEmail(email);
     if (!user) {
-      throw new ErrorGenerator(401, "User not registerd");
+      throw new ErrorGenerator(401, "User not registered");
     }
 
     //password check
@@ -107,12 +104,12 @@ class UserController {
     const { serach } = req.query;
     const keyword = serach
       ? {
-          $or: [
-            { name: { $regex: serach, $options: "i" } },
+        $or: [
+          { name: { $regex: serach, $options: "i" } },
 
-            { email: { $regex: serach, $options: "i" } },
-          ],
-        }
+          { email: { $regex: serach, $options: "i" } },
+        ],
+      }
       : {};
     // @ts-ignore
     const users = await userDal.findUsers(keyword, req.userId);

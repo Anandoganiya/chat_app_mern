@@ -185,8 +185,8 @@ function SideDrawer() {
               <Avatar
                 size="sm"
                 cursor="pointer"
-                name={user.name}
-                src={user.pic}
+                name={user.data.data.name}
+                src={user.data.data.profileImage}
               />
             </MenuButton>
             <MenuList>
@@ -211,11 +211,6 @@ function SideDrawer() {
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                  }
-                  console.log(e.key);
-                }}
               />
               <Button onClick={handleSearch}>Find</Button>
             </Box>

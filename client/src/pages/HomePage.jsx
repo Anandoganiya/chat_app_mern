@@ -11,7 +11,7 @@ import {
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../components/Authentication/Login";
-import Signup from "../components/Authentication/Signup";
+import SignUp from "../components/Authentication/Signup";
 
 function Homepage() {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function Homepage() {
               <Login />
             </TabPanel>
             <TabPanel>
-              <Signup />
+              <SignUp />
             </TabPanel>
           </TabPanels>
         </Tabs>

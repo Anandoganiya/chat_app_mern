@@ -11,7 +11,7 @@ import { router } from "./api";
 import { errorHandler } from "./middleware";
 
 const app: Application = express();
-const PORT = Number(process.env.PORT) | 6000;
+const PORT = Number(process.env.PORT) || 6000;
 
 app.use(morgan("dev"));
 app.use(
