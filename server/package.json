@@ -1,11 +1,11 @@
 {
   "name": "chat-app-server",
   "version": "1.0.0",
-  "description": "chat app using mern stack",
-  "main": "src/index.ts",
+  "description": "chat app",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon src/index.ts",
-    "start": "ts-node  src/index.ts",
+    "dev": "nodemon src/app.ts",
+    "start": "ts-node  src/app.ts",
     "build": "tsc"
   },
   "keywords": [],
