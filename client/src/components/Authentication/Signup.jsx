@@ -50,7 +50,7 @@ const SignUp = () => {
         },
       };
       const { data } = await axios.post(
-        "http://localhost:6136/user/user-register",
+        `${import.meta.env.VITE_APP_BASE_API}/user/user-register`,
         {
           name,
           email,
@@ -97,10 +97,13 @@ const SignUp = () => {
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("imgFile", pics);
-      await fetch("http://localhost:6136/user/upload/profile-image", {
-        method: "post",
-        body: data,
-      })
+      await fetch(
+        `${import.meta.env.VITE_APP_BASE_API}/user/upload/profile-image`,
+        {
+          method: "post",
+          body: data,
+        }
+      )
         .then((res) => {
           return res.json();
         })

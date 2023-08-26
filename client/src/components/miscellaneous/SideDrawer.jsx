@@ -78,7 +78,7 @@ function SideDrawer() {
       };
 
       const { data } = await axios.get(
-        `http://localhost:6136/user?serach=${search}`,
+        `${import.meta.env.VITE_APP_BASE_API}/user?serach=${search}`,
         config
       );
 
@@ -109,7 +109,7 @@ function SideDrawer() {
         },
       };
       const { data } = await axios.post(
-        `http://localhost:6136/chat`,
+        `${import.meta.env.VITE_APP_BASE_API}/chat`,
         { userId },
         config
       );

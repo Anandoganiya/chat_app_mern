@@ -48,7 +48,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.get(
-        `http://localhost:6136/user?search=${search}`,
+        `${import.meta.env.VITE_APP_BASE_API}/user?search=${search}`,
         config
       );
       // console.log(data);
@@ -78,7 +78,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:6136/chat/rename-group`,
+        `${import.meta.env.VITE_APP_BASE_API}/chat/rename-group`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -136,7 +136,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:6136/chat/add-group`,
+        `${import.meta.env.VITE_APP_BASE_API}/chat/add-group`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -194,7 +194,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:6136/chat/remove-group`,
+        `${import.meta.env.VITE_APP_BASE_API}/chat/remove-group`,
         {
           chatId: selectedChat._id,
           userId: user1._id,

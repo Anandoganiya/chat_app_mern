@@ -31,7 +31,6 @@ const Login = () => {
       return;
     }
 
-    // console.log(email, password);
     try {
       const config = {
         headers: {
@@ -40,7 +39,7 @@ const Login = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:6136/user/user-login",
+        `${import.meta.env.VITE_APP_BASE_API}/user/user-login`,
         { email, password },
         config
       );

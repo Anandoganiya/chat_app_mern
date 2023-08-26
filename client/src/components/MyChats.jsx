@@ -29,7 +29,7 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:6136/chat/fetch-chat",
+        `${import.meta.env.VITE_APP_BASE_API}/chat/fetch-chat`,
         {},
         config
       );

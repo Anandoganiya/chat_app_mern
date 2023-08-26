@@ -59,7 +59,7 @@ const GroupChatModal = ({ children }) => {
         },
       };
       const { data } = await axios.get(
-        `http://localhost:6136/user?search=${search}`,
+        `${import.meta.env.VITE_APP_BASE_API}/user?search=${search}`,
         config
       );
 
@@ -101,7 +101,7 @@ const GroupChatModal = ({ children }) => {
         },
       };
       const { data } = await axios.post(
-        `http://localhost:6136/chat/create-groupchat`,
+        `${import.meta.env.VITE_APP_BASE_API}/chat/create-groupchat`,
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),
