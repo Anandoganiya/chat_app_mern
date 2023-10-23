@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
 
+.testClass{
+    display: flex;
+}
+
 .App {
     min-height: 100vh;
     display: flex;
